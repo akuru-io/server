@@ -6,28 +6,12 @@
       "entrypoint": "public/landing/"
     },
     {
-      "path": "/api/user/:id",
-      "middlewares": ["authorize", "database"],
-      "func": "user"
-    },
-    {
-      "path": "/api/users",
+      "path": "/api/fonts",
       "type": "proxy",
-      "endpoint": "https://jsonplaceholder.typicode.com/users"
+      "endpoint": "https://raw.githubusercontent.com/fontlet/assets/master/fontlet.json"
     }
   ],
-  "POST": [
-    {
-      "path": "/auth",
-      "middlewares": ["authenticate"],
-      "func": "authenticate"
-    },
-    {
-      "path": "/api/user",
-      "middlewares": ["authorize"],
-      "func": "user"
-    }
-  ],
+  "POST": [],
   "PUT": [],
   "DELETE": []
 }
