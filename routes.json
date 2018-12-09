@@ -6,10 +6,6 @@
       "entrypoint": "public/"
     },
     {
-      "path": "/api",
-      "func": "welcome"
-    },
-    {
       "path": "/api/user/:id",
       "middlewares": ["authorize", "database"],
       "func": "user"
