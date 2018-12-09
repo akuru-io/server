@@ -3,7 +3,7 @@
     {
       "path": "/",
       "type": "static",
-      "entrypoint": "public/"
+      "entrypoint": "public/landing/"
     },
     {
       "path": "/api/user/:id",

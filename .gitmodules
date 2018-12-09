@@ -1,0 +1,3 @@
+[submodule "public/landing"]
+	path = public/landing
+	url = git@github.com:fontlet/fontlet-landing-page.git
