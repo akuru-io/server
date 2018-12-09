@@ -4,6 +4,7 @@
   "description": "Simple RESTful API Gateway",
   "main": "index.js",
   "scripts": {
+    "setup": "npm i && git submodule update --init --recursive",
     "start": "node ./server.js",
     "dev": "nodemon ./server.js"
   },
