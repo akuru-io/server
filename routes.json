@@ -9,9 +9,25 @@
       "path": "/api/fonts",
       "type": "proxy",
       "endpoint": "https://raw.githubusercontent.com/fontlet/assets/master/fontlet.json"
+    },
+    {
+      "path": "/api/user/:id",
+      "middlewares": ["authorize", "database"],
+      "func": "user"
     }
   ],
-  "POST": [],
+  "POST": [
+    {
+      "path": "/api/auth",
+      "middlewares": ["authenticate"],
+      "func": "authenticate"
+    },
+    {
+      "path": "/api/user",
+      "middlewares": ["authorize"],
+      "func": "user"
+    }
+  ],
   "PUT": [],
   "DELETE": []
 }
