@@ -24,7 +24,7 @@
     },
     {
       "path": "/api/user",
-      "middlewares": ["authorize"],
+      "middlewares": ["authorize", "database"],
       "func": "user"
     }
   ],
