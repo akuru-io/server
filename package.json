@@ -1,12 +1,13 @@
 {
-  "name": "simple-restful-api-gateway",
+  "name": "fontlet-server",
   "version": "1.0.0",
-  "description": "Simple RESTful API Gateway",
-  "main": "index.js",
+  "description": "Fontlet API Server",
+  "main": "server.js",
   "scripts": {
     "setup": "npm i && git submodule update --init --recursive",
     "start": "node ./server.js",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "deploy": "./deploy.sh"
   },
   "author": "thinkholic <mailtokasun@gmail.com>",
   "license": "MIT",
