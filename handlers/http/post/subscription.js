@@ -1,19 +1,70 @@
+const jwt = require("jsonwebtoken");
+
 const User = require("../../../extends/models/user");
+const Subscription = require("../../../extends/models/subscription");
+
+// Token generator
+// TODO: Move this to extends/utils/key-generator
+function generator(
+  payload = {},
+  options = {},
+  secretKey = process.env.KEYGEN_HASH
+) {
+  let token;
+  try {
+    token = jwt.sign(payload, secretKey, options);
+  } catch (e) {
+    token = null;
+  }
+  return token;
+}
 
 const subscription = (req, res) => {
-  // TODO: Should get user data by reading req.body and create new user
+  // TODO: Authorize the request.
+  const userObj = {
+    email: req.body.email
+  };
+  const user = new User(userObj);
 
-  // const user = new User({
-  //   email: "user@example.com",
-  //   subscription: { type: "FREE", token: "sds" }
-  // });
+  // Create user
+  user.save((userCreationError, resp) => {
+    if (userCreationError) {
+      res.status(500).send({
+        error: {
+          code: 500,
+          message: "Internal Server Error",
+          meta: userCreationError
+        }
+      });
+    }
 
-  // user.save((err, user) => {
-  //   if (err) return console.error(err);
-  //   res.json({ message: `New user created.`, body: req.body });
-  // });
+    // Generate the token
+    const token = generator({
+      _id: resp._id,
+      email: resp.email,
+      createdAt: resp.createdAt
+    });
 
-  res.json({ message: `subscription`, body: req.body });
+    // Update scubscription
+    const subs = new Subscription({
+      token,
+      type: null,
+      user: { email: resp.email }
+    });
+    subs.save((error, subsResp) => {
+      if (error) {
+        res.status(500).send({
+          error: {
+            code: 500,
+            message: "Internal Server Error",
+            meta: userCreationError
+          }
+        });
+      }
+
+      res.status(200).send({ error: null, body: { user }, token });
+    });
+  });
 };
 
 module.exports = subscription;
