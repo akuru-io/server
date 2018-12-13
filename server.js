@@ -49,7 +49,6 @@ methods.forEach(methodKey => {
     }
 
     if (type === "proxy") {
-      const { endpoint } = config;
       app[funcHandler](
         path,
         coreHandlers[funcHandler].proxy.bind(null, config)
