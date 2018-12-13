@@ -24,8 +24,13 @@
     },
     {
       "path": "/api/user",
-      "middlewares": ["authorize", "database"],
+      "middlewares": ["database"],
       "func": "user"
+    },
+    {
+      "path": "/api/subscription",
+      "middlewares": ["database"],
+      "func": "subscription"
     }
   ],
   "PUT": [],

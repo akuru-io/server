@@ -14,8 +14,8 @@ module.exports = (req, res, next) => {
         mongoose.connect(mongoDb.url);
         database = mongoose.connection;
 
-        db.on("error", console.error.bind(console, "MongoDB error:"));
-        db.once("open", () => console.log("Connected to MongoDB"));
+        database.on("error", console.error.bind(console, "MongoDB error:"));
+        database.once("open", () => console.log("Connected to MongoDB"));
 
       default:
         database = null;

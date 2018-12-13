@@ -1,9 +1,22 @@
+const User = require("../../../extends/models/user");
+
 const user = (req, res) => {
   // TODO: Should get user data by reading req.body and create new user
-  res.json({
-    message: `New user created.`,
-    body: req.body
+
+  const user = new User({
+    email: "user@example.com",
+    subscription: { type: "FREE", token: "sds" }
   });
+
+  user.save((err, user) => {
+    if (err) return console.error(err);
+    res.json({ message: `New user created.`, body: req.body });
+  });
+
+  // res.json({
+  //   message: `New user created.`,
+  //   body: req.body
+  // });
 };
 
 module.exports = user;
