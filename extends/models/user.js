@@ -11,9 +11,14 @@ const subscriptionSchema = new Schema(
 
 const UserSchema = new Schema({
   _d: String,
+  firstName: String,
+  lastName: String,
   email: String,
+  password: String,
   subscription: subscriptionSchema,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  modifiedAt: Date,
+  lastSeen: Date
 });
 
 const UserModel = mongoose.model("User", UserSchema);
