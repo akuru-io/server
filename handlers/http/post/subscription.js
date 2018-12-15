@@ -19,8 +19,14 @@ function generator(
   return token;
 }
 
+/**
+ * POST api/subscription
+ * @param email
+ */
+
 const subscription = (req, res) => {
   // TODO: Authorize the request.
+
   const userObj = {
     email: req.body.email
   };
