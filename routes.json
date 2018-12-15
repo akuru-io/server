@@ -8,6 +8,7 @@
     {
       "path": "/api/fonts",
       "type": "proxy",
+      "middlewares": ["authorize"],
       "endpoint": "https://raw.githubusercontent.com/fontlet/assets/master/fontlet.json"
     },
     {
@@ -29,7 +30,7 @@
     },
     {
       "path": "/api/user",
-      "middlewares": ["database"],
+      "middlewares": ["database", "authorize-client"],
       "func": "user"
     },
     {

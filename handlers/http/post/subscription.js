@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const generator = require("../../../extends/utils/ key-generator");
+const uuid = require("uuid/v4");
+
 const User = require("../../../extends/models/user");
 const Subscription = require("../../../extends/models/subscription");
 
@@ -8,48 +9,82 @@ const Subscription = require("../../../extends/models/subscription");
  * @param email
  */
 module.exports = (req, res) => {
-  const userObj = {
-    email: req.body.email
-  };
-  const user = new User(userObj);
-
-  // Create user
-  user.save((userCreationError, userCreated) => {
-    if (userCreationError) {
+  User.findOne({ email: req.body.email }, (errFind, theUser) => {
+    if (errFind) {
       res.status(500).send({
         error: {
           code: 500,
           message: "Internal Server Error",
-          meta: userCreationError
+          meta: errFind
         }
       });
     }
 
-    // Generate the token
-    const token = generator({
-      _id: userCreated._id,
-      email: userCreated.email,
-      createdAt: userCreated.createdAt
-    });
+    // Generate the licenseKey
+    const licenseKey = uuid();
 
-    // Update scubscription
-    const subs = new Subscription({
-      token,
-      type: null,
-      user: { email: userCreated.email }
-    });
-
-    subs.save((error, subsResp) => {
-      if (error) {
-        res.status(500).send({
-          error: {
-            code: 500,
-            message: "Internal Server Error",
-            meta: userCreationError
+    if (theUser) {
+      User.update(
+        { email: req.body.email },
+        { subscription: { type: "PAID", licenseKey } },
+        errUsrUpdate => {
+          if (errUsrUpdate) {
+            res.status(500).send({
+              error: {
+                code: 500,
+                message: "Internal Server Error",
+                meta: errFind
+              }
+            });
           }
+
+          // Create new subscription
+          const subs = new Subscription({
+            licenseKey,
+            user: {
+              email: theUser.email
+            }
+          });
+          subs.save((errSubs, subscription) => {
+            if (errSubs) {
+              res.status(500).send({
+                error: {
+                  code: 500,
+                  message: "Internal Server Error",
+                  meta: errSubs
+                }
+              });
+            }
+            res.status(200).send({
+              error: null,
+              body: { user: theUser, licenseKey }
+            });
+          });
+        }
+      );
+    } else {
+      // Create new subscription
+      const subs = new Subscription({
+        licenseKey,
+        user: {
+          email: null
+        }
+      });
+      subs.save((errSubs, subscription) => {
+        if (errSubs) {
+          res.status(500).send({
+            error: {
+              code: 500,
+              message: "Internal Server Error",
+              meta: errSubs
+            }
+          });
+        }
+        res.status(200).send({
+          error: null,
+          body: { licenseKey }
         });
-      }
-      res.status(200).send({ error: null, body: { user } });
-    });
+      });
+    }
   });
 };

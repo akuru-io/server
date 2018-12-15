@@ -1,22 +1,32 @@
 const User = require("../../../extends/models/user");
+const generator = require("../../../extends/utils/ key-generator");
 
-const user = (req, res) => {
-  // TODO: Should get user data by reading req.body and create new user
-
+/**
+ * POST api/subscription
+ * @param email
+ */
+module.exports = (req, res) => {
   const user = new User({
-    email: "user@example.com",
-    subscription: { type: "FREE", token: "sds" }
+    email: req.body.email,
+    subscription: { type: "FREE", licenseKey: null }
   });
 
-  user.save((err, user) => {
-    if (err) return console.error(err);
-    res.json({ message: `New user created.`, body: req.body });
-  });
+  user.save((error, userCreated) => {
+    if (error) {
+      res.status(500).send({
+        error: {
+          code: 500,
+          message: "Internal Server Error",
+          meta: userCreationError
+        }
+      });
+    }
 
-  // res.json({
-  //   message: `New user created.`,
-  //   body: req.body
-  // });
+    const token = generator({
+      _id: userCreated._id,
+      email: userCreated.email,
+      createdAt: userCreated.createdAt
+    });
+    res.json({ error: null, body: { user: userCreated, token } });
+  });
 };
-
-module.exports = user;

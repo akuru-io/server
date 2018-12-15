@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const authenticate = (req, res) => {
+module.exports = (req, res) => {
   const { SECRET_KEY } = req.config;
   const user = req.user;
 
@@ -10,9 +10,6 @@ const authenticate = (req, res) => {
       // Forbidden
       res.status(403).send({ status: { code: 403, message: "Forbidden" } });
     }
-
     res.json({ token });
   });
 };
-
-module.exports = authenticate;

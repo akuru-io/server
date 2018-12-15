@@ -16,7 +16,10 @@ const FontSchema = new Schema(
 );
 
 const SubscriptionSchema = new Schema({
-  token: String,
+  licenseKey: {
+    type: String,
+    unique: true
+  },
   type: String,
   user: UserSchema,
   fonts: {

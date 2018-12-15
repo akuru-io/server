@@ -3,8 +3,11 @@ const Schema = mongoose.Schema;
 
 const subscriptionSchema = new Schema(
   {
-    type: String,
-    token: String
+    type: {
+      type: String,
+      default: "FREE"
+    },
+    licenseKey: String
   },
   { _id: false }
 );
