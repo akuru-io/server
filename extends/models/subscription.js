@@ -16,7 +16,6 @@ const FontSchema = new Schema(
 );
 
 const SubscriptionSchema = new Schema({
-  _id: String,
   token: String,
   type: String,
   user: UserSchema,

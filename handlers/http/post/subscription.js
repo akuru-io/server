@@ -1,39 +1,20 @@
 const jwt = require("jsonwebtoken");
-
+const generator = require("../../../extends/utils/ key-generator");
 const User = require("../../../extends/models/user");
 const Subscription = require("../../../extends/models/subscription");
-
-// Token generator
-// TODO: Move this to extends/utils/key-generator
-function generator(
-  payload = {},
-  options = {},
-  secretKey = process.env.KEYGEN_HASH
-) {
-  let token;
-  try {
-    token = jwt.sign(payload, secretKey, options);
-  } catch (e) {
-    token = null;
-  }
-  return token;
-}
 
 /**
  * POST api/subscription
  * @param email
  */
-
-const subscription = (req, res) => {
-  // TODO: Authorize the request.
-
+module.exports = (req, res) => {
   const userObj = {
     email: req.body.email
   };
   const user = new User(userObj);
 
   // Create user
-  user.save((userCreationError, resp) => {
+  user.save((userCreationError, userCreated) => {
     if (userCreationError) {
       res.status(500).send({
         error: {
@@ -46,17 +27,18 @@ const subscription = (req, res) => {
 
     // Generate the token
     const token = generator({
-      _id: resp._id,
-      email: resp.email,
-      createdAt: resp.createdAt
+      _id: userCreated._id,
+      email: userCreated.email,
+      createdAt: userCreated.createdAt
     });
 
     // Update scubscription
     const subs = new Subscription({
       token,
       type: null,
-      user: { email: resp.email }
+      user: { email: userCreated.email }
     });
+
     subs.save((error, subsResp) => {
       if (error) {
         res.status(500).send({
@@ -67,10 +49,7 @@ const subscription = (req, res) => {
           }
         });
       }
-
-      res.status(200).send({ error: null, body: { user }, token });
+      res.status(200).send({ error: null, body: { user } });
     });
   });
 };
-
-module.exports = subscription;

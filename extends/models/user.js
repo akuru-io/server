@@ -10,10 +10,12 @@ const subscriptionSchema = new Schema(
 );
 
 const UserSchema = new Schema({
-  _id: String,
   firstName: String,
   lastName: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true
+  },
   password: String,
   subscription: subscriptionSchema,
   createdAt: { type: Date, default: Date.now },

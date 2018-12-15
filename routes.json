@@ -23,13 +23,18 @@
       "func": "authenticate"
     },
     {
+      "path": "/api/auth/client",
+      "middlewares": ["database", "authenticate-client"],
+      "func": "authenticate-client"
+    },
+    {
       "path": "/api/user",
       "middlewares": ["database"],
       "func": "user"
     },
     {
       "path": "/api/subscription",
-      "middlewares": ["database"],
+      "middlewares": ["database", "authorize-client"],
       "func": "subscription"
     }
   ],

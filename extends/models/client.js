@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const uuidv1 = require("uuid/v1");
+const uuid = require("uuid/v4");
 
 const Schema = mongoose.Schema;
 
@@ -7,11 +7,13 @@ const ClientSchema = new Schema({
   _id: String,
   clientId: {
     type: String,
-    default: uuidv1()
+    default: uuid(),
+    unique: true
   },
   clientSecret: {
     type: String,
-    default: uuidv1()
+    default: uuid(),
+    unique: true
   },
   clientType: {
     type: String,
@@ -20,5 +22,5 @@ const ClientSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const ClientModel = mongoose.model("User", ClientSchema);
+const ClientModel = mongoose.model("Client", ClientSchema);
 module.exports = ClientModel;
