@@ -10,7 +10,7 @@ const subscriptionSchema = new Schema(
 );
 
 const UserSchema = new Schema({
-  _d: String,
+  _id: String,
   firstName: String,
   lastName: String,
   email: String,
