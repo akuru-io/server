@@ -6,9 +6,24 @@
       "entrypoint": "public/landing/"
     },
     {
+      "path": "/store",
+      "type": "static",
+      "entrypoint": "public/store/"
+    },
+    {
+      "path": "/store/checkout/success",
+      "type": "static",
+      "entrypoint": "public/store/checkout/success.html"
+    },
+    {
+      "path": "/store/checkout/cancel",
+      "type": "static",
+      "entrypoint": "public/store/checkout/cancel.html"
+    },
+    {
       "path": "/api/fonts",
       "type": "proxy",
-      "middlewares": ["authorize"],
+      "middlewares": [],
       "endpoint": "https://raw.githubusercontent.com/fontlet/assets/master/fontlet.json"
     },
     {
@@ -37,6 +52,11 @@
       "path": "/api/subscription",
       "middlewares": ["database", "authorize-client"],
       "func": "subscription"
+    },
+    {
+      "path": "/api/pay/ph/notify",
+      "middlewares": [],
+      "func": "payments-notify"
     }
   ],
   "PUT": [],
